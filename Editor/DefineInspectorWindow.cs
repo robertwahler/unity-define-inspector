@@ -27,8 +27,27 @@ public class DefineInspectorWindow : EditorWindow
         if (!_hasReadSymbols) {
             _pathToFile = string.Format("{0}/ProjectSettings/{1}", System.IO.Directory.GetCurrentDirectory(), _filename);
             _defineSymbols = ParseFileToPairs(_pathToFile);
+            if (_defineSymbols.Count <= 0) {
+                _defineSymbols = ParsePlayerSettingsToPairs(GetPlayerSettingsScriptDefines());
+            }
+            // TODO: Read player settings each time to look for new defines that
+            // have been added manually via the Unity build setting dialog
             _hasReadSymbols = true;
         }
+    }
+
+    private static List<DefinePair> ParsePlayerSettingsToPairs(string defines) {
+        string[] lines = defines.Split(';');
+        var pairs = new List<DefinePair>();
+        foreach (string line in lines) {
+            DefinePair newPair = new DefinePair {
+                defineSymbol = line,
+                on = true,
+            };
+            AddPairToFile(newPair);
+            pairs.Add(newPair);
+        }
+        return pairs;
     }
 
     private static List<DefinePair> ParseFileToPairs(string filepath) {
@@ -113,6 +132,11 @@ public class DefineInspectorWindow : EditorWindow
             text = text.Remove(index, delimiterIndex - index + 1);
         }
         File.WriteAllText(_pathToFile, text);
+    }
+
+    private static string GetPlayerSettingsScriptDefines() {
+        var targetBuildGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+        return PlayerSettings.GetScriptingDefineSymbolsForGroup(targetBuildGroup);
     }
 
     private void SetScriptDefines() {
