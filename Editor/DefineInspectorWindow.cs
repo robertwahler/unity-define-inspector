@@ -25,7 +25,7 @@ public class DefineInspectorWindow : EditorWindow
 
     private static void CheckToReadPairsFromFile() {
         if (!_hasReadSymbols) {
-            _pathToFile = Path.Combine(Application.dataPath, _filename);
+            _pathToFile = string.Format("{0}/ProjectSettings/{1}", System.IO.Directory.GetCurrentDirectory(), _filename);
             _defineSymbols = ParseFileToPairs(_pathToFile);
             _hasReadSymbols = true;
         }
