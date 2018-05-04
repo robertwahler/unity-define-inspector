@@ -117,7 +117,7 @@ public class DefineInspectorWindow : EditorWindow
 
     private void SetScriptDefines() {
         var targetBuildGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-        string defines = CreateDefinesString(); 
+        string defines = CreateDefinesString();
         PlayerSettings.SetScriptingDefineSymbolsForGroup(targetBuildGroup, defines);
     }
 
