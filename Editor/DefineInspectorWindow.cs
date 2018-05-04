@@ -12,7 +12,7 @@ public class DefineInspectorWindow : EditorWindow
     private static bool _hasReadSymbols;
     private string _newDefine = "";
 
-    [MenuItem("Window/DefineInspector")]
+    [MenuItem("Window/Define Inspector")]
     public static void ShowWindow() {
         GetWindow(typeof(DefineInspectorWindow));
         CheckToReadPairsFromFile();
